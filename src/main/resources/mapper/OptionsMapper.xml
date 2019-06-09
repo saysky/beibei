@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.OptionsMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Options">
+    <id column="option_name" jdbcType="VARCHAR" property="optionName"/>
+    <result column="option_value" jdbcType="VARCHAR" property="optionValue"/>
+  </resultMap>
+
+  <sql id="all_columns">
+    option_name, option_value
+    </sql>
+
+  <sql id="tb">`sens_options`</sql>
+
+  <sql id="all_values">
+        #{optionName}, #{optionValue}
+    </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+  </select>
+
+  <select id="findOptionsByOptionName" resultType="com.liuyanzhao.sens.entity.Options">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+    WHERE option_name = #{optionName}
+  </select>
+</mapper>

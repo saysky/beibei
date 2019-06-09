@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.PostMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Post">
+        <id column="post_id" jdbcType="INTEGER" property="postId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="post_title" jdbcType="VARCHAR" property="postTitle"/>
+        <result column="post_type" jdbcType="VARCHAR" property="postType"/>
+        <result column="post_content" jdbcType="VARCHAR" property="postContent"/>
+        <result column="post_url" jdbcType="VARCHAR" property="postUrl"/>
+        <result column="post_summary" jdbcType="VARCHAR" property="postSummary"/>
+        <result column="post_thumbnail" jdbcType="VARCHAR" property="postThumbnail"/>
+        <result column="post_date" jdbcType="TIMESTAMP" property="postDate"/>
+        <result column="post_update" jdbcType="TIMESTAMP" property="postUpdate"/>
+        <result column="post_status" jdbcType="INTEGER" property="postStatus"/>
+        <result column="post_views" jdbcType="INTEGER" property="postViews"/>
+        <result column="post_likes" jdbcType="INTEGER" property="postLikes"/>
+        <result column="comment_size" jdbcType="INTEGER" property="commentSize"/>
+        <result column="post_source" jdbcType="INTEGER" property="postSource"/>
+        <result column="allow_comment" jdbcType="INTEGER" property="allowComment"/>
+        <result column="jump_url" jdbcType="VARCHAR" property="jumpUrl"/>
+        <result column="video_url" jdbcType="VARCHAR" property="videoUrl"/>
+        <result column="data_url" jdbcType="VARCHAR" property="dataUrl"/>
+        <result column="rate" jdbcType="INTEGER" property="rate"/>
+        <result column="related_ids" jdbcType="VARCHAR" property="relatedIds"/>
+    </resultMap>
+
+    <sql id="all_columns">
+    post_id, user_id, post_title, post_type,
+    post_content, post_url, post_summary, post_thumbnail, post_date,
+    post_update, post_status, post_views, post_likes, comment_size, post_source,
+    allow_comment,jump_url,video_url,data_url,rate,related_ids
+    </sql>
+
+    <sql id="tb">`sens_post`</sql>
+
+    <sql id="publish_status">0</sql>
+    <sql id="draft_status">1</sql>
+    <sql id="trash_status">2</sql>
+
+    <sql id="all_values">
+    #{postId}, #{userId}, #{postTitle}, #{postType},
+    #{postContent}, #{postUrl}, #{postSummary}, #{postThumbnail}, #{postDate},
+    #{postUpdate}, #{postStatus}, #{postViews}, #{postLikes}, #{commentSize},
+    #{postSource}, #{allowComment},#{jumpUrl},#{videoUrl},#{dataUrl},#{rate},#{relatedIds}
+  </sql>
+
+    <sql id="simple_columns">
+    post_id, user_id, post_title, post_type, post_url,
+    post_summary, post_thumbnail, post_date, post_update,
+    post_status, post_views, post_likes, comment_size,
+    jump_url,video_url,data_url,rate,related_ids
+  </sql>
+
+    <sql id="simple_columns_include_table_name">
+    sens_post.post_id, sens_post.user_id, sens_post.post_title,
+    sens_post.post_type, sens_post.post_url, sens_post.post_summary,
+    sens_post.post_thumbnail, sens_post.post_date, sens_post.post_update,
+    sens_post.post_status, sens_post.post_views, sens_post.post_likes, sens_post.comment_size,
+    sens_post.jump_url, sens_post.video_url, sens_post.data_url, sens_post.rate,sens_post.related_ids
+  </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+    </select>
+
+    <select id="findTopFive" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_type = 'post' AND post_status =
+        <include refid="publish_status"/>
+        ORDER BY post_date DESC LIMIT 5
+    </select>
+
+    <select id="findPostsByPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_type = #{value}
+    </select>
+
+    <select id="findPostByPostUrl" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_url = #{value}
+    </select>
+    <select id="listYears" resultType="java.lang.Integer">
+        SELECT DISTINCT year(post_date) FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+    </select>
+
+    <select id="pagingPostsByPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_type = #{postType}
+        ORDER BY post_date DESC
+    </select>
+
+    <select id="pagingByPostTitleLike" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_title LIKE CONCAT('%','${keyword}','%') AND post_status =
+        <include refid="publish_status"/>
+        ORDER BY post_date DESC
+    </select>
+
+    <select id="pagingPostsByPostStatusAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_status = #{status} AND post_type = #{postType}
+    </select>
+
+    <select id="pagingPostsByUserIdAndPostStatusAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_id = #{userId} AND post_status = #{status} AND post_type = #{postType}
+    </select>
+
+    <select id="pagingPostsWithContentByPostStatusAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_status = #{status} AND post_type = #{postType}
+    </select>
+
+    <select id="findPostsByPostStatusAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_status = #{status} AND post_type = #{postType}
+    </select>
+
+    <select id="findPostByPostUrlAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_url = #{postUrl} AND post_type = #{postType}
+    </select>
+
+    <select id="findPostByPostIdAndPostType" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_id = #{postId} AND post_type = #{postType}
+    </select>
+
+    <select id="findPostGroupByYearAndMonth" resultType="com.liuyanzhao.sens.model.dto.Archive">
+        SELECT year(post_date) AS year,
+        month(post_date) AS month,
+        COUNT(*) AS count FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+        and post_type = 'post'
+        GROUP BY year(post_date),month(post_date)
+        ORDER BY year desc,month DESC
+    </select>
+
+    <select id="findPostGroupByYear" resultType="com.liuyanzhao.sens.model.dto.Archive">
+        SELECT year(post_date) AS year,
+        COUNT(*) AS count FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+        AND post_type = 'post'
+        GROUP BY year(post_date) ORDER BY year DESC
+    </select>
+
+    <select id="findPostByYearAndMonth" resultType="com.liuyanzhao.sens.model.dto.PostBriefDto">
+        select
+        post_id, post_url, post_title, post_date,
+        year(post_date) AS year,
+        month(post_date) AS month
+        FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+        AND post_type = 'post'
+        AND year(post_date)=#{year} and month(post_date)=#{month}
+        ORDER BY post_date DESC
+    </select>
+
+    <select id="findPostByYear" resultType="com.liuyanzhao.sens.model.dto.PostBriefDto">
+        select
+        post_id, post_url, post_title,
+        year(post_date) AS year
+        FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+        AND post_type = 'post'
+        AND year(post_date)=#{year}
+        ORDER BY post_date DESC
+    </select>
+
+
+    <select id="pagingPostByYearAndMonth" resultType="com.liuyanzhao.sens.entity.Post">
+        select
+        <include refid="simple_columns"/>
+        ,
+        year(post_date) AS year,
+        month(post_date) AS month FROM
+        <include refid="tb"/>
+        WHERE post_status =
+        <include refid="publish_status"/>
+        AND post_type = 'post'
+        AND year(post_date)=#{year} and month(post_date)=#{month}
+        ORDER BY post_date DESC
+    </select>
+
+    <select id="pagingPostByCategoryIdsAndPostStatus" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns_include_table_name"/>
+        FROM
+        sens_post, sens_post_category_ref
+        <where>
+            sens_post_category_ref.cate_id IN
+            <foreach collection="cateIds" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            AND
+            sens_post_category_ref.post_id = sens_post.post_id AND
+            sens_post.post_status = #{status}
+        </where>
+        ORDER BY sens_post.post_date DESC
+    </select>
+
+    <select id="findPostByCategoryIdAndPostStatus" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns_include_table_name"/>
+        FROM
+        sens_post, sens_post_category_ref
+        WHERE sens_post_category_ref.cate_id = #{cateId} AND
+        sens_post_category_ref.post_id = sens_post.post_id AND
+        sens_post.post_status = #{status}
+        ORDER BY sens_post.post_date DESC
+    </select>
+
+    <select id="pagingPostsByTagIdAndPostStatus" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns_include_table_name"/>
+        FROM
+        sens_post, sens_post_tag_ref
+        WHERE sens_post_tag_ref.tag_id = #{tagId} AND
+        sens_post_tag_ref.post_id = sens_post.post_id AND
+        sens_post.post_status = #{status}
+        ORDER BY sens_post.post_date DESC
+    </select>
+
+    <select id="findPostsByTagId" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns_include_table_name"/>
+        FROM
+        sens_post, sens_post_tag_ref
+        WHERE sens_post_tag_ref.tag_id = #{tagId} AND
+        sens_post_tag_ref.post_id = sens_post.post_id
+        AND sens_post.post_status =
+        <include refid="publish_status"/>
+        ORDER BY sens_post.post_date DESC
+    </select>
+
+    <select id="pagingPostByPostTitleLikeOrPostContentLikeAndPostTypeAndPostStatus"
+            resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            post_status =
+            <include refid="publish_status"/>
+            AND
+            post_type = 'post' AND
+            post_title LIKE CONCAT('%','${keyword}','%') OR
+            post_content LIKE CONCAT('%','${keyword}','%')
+        </where>
+        ORDER BY post_date DESC
+    </select>
+
+    <select id="getPostViewsSum" resultType="java.lang.Long">
+        SELECT sum(post_views) FROM
+        <include refid="tb"/>
+    </select>
+
+    <select id="findPostsByPostTypeOrderByPostViewsDesc" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_status = #{value}
+        AND post_type = 'post' ORDER BY post_views DESC LIMIT 10
+    </select>
+
+    <select id="countByPostStatusAndPostType" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
+        WHERE post_status = #{status} AND post_type = #{postType}
+    </select>
+
+    <select id="countByUserIdAndPostStatusAndPostType" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
+        WHERE user_id = #{userId} AND post_status = #{status} AND post_type = #{postType}
+    </select>
+    <select id="findPostsByCategoryId" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns_include_table_name"/>
+        FROM
+        sens_post, sens_post_category_ref
+        WHERE sens_post_category_ref.cate_id = #{value} AND
+        sens_post_category_ref.post_id = sens_post.post_id
+        ORDER BY sens_post.post_date DESC
+    </select>
+
+    <select id="findByPostIdAfter" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_id &gt; #{postId} AND post_type = #{postType} AND post_status =
+        <include refid="publish_status"/>
+        LIMIT 1
+    </select>
+
+    <select id="findByPostIdBefore" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_id &lt; #{postId} AND post_type = #{postType} AND post_status =
+        <include refid="publish_status"/>
+        ORDER BY post_date DESC LIMIT 1
+    </select>
+
+    <update id="updatePostViews">
+        UPDATE
+        <include refid="tb"/>
+        SET post_views = #{views}
+        WHERE post_id = #{postId}
+    </update>
+
+    <update id="batchUpdatePostViews">
+        <foreach collection="list" item="item">
+            UPDATE
+            <include refid="tb"/>
+            SET post_views = #{item.postViews} WHERE post_id = #{item.postId};
+        </foreach>
+    </update>
+
+    <select id="selectMaxPostUpdate" resultType="java.util.Date">
+        SELECT MAX(post_update) FROM
+        <include refid="tb"/>
+    </select>
+
+    <select id="selectAllPostIds" resultType="java.lang.Long">
+        SELECT post_id FROM
+        <include refid="tb"/>
+    </select>
+
+    <update id="updateCommentSize">
+        UPDATE
+        <include refid="tb"/>
+        SET sens_post.comment_size = (
+        SELECT COUNT(*) FROM sens_comment WHERE sens_comment.post_id = #{value} AND sens_comment.comment_status = 0
+        ) WHERE sens_post.post_id = #{value}
+    </update>
+
+    <update id="updatePostStatus">
+        UPDATE
+        <include refid="tb"/>
+        SET post_status = #{status}
+        WHERE post_id = #{postId}
+    </update>
+
+    <update id="updatePostLikes">
+        UPDATE
+        <include refid="tb"/>
+        SET post_likes = post_likes + 1
+        WHERE post_id = #{postId}
+    </update>
+
+    <update id="updatePostSummary">
+        UPDATE
+        <include refid="tb"/>
+        SET post_summary = #{summary}
+        WHERE post_id = #{postId}
+    </update>
+
+    <delete id="deleteByUserId">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE user_id = #{value}
+    </delete>
+
+    <select id="findByUserIdAndStatus" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="simple_columns"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            user_id = #{userId}
+            <if test="status != null">
+                AND post_status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="countByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
+        WHERE user_id = #{value} AND post_status =
+        <include refid="publish_status"/>
+    </select>
+
+    <select id="selectIdsByUserId" resultType="java.lang.Long">
+        SELECT post_id FROM
+        <include refid="tb"/>
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="listHotPosts" resultType="com.liuyanzhao.sens.entity.Post">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE post_type = 'post' ORDER BY rate DESC
+        LIMIT #{value}
+    </select>
+
+</mapper>

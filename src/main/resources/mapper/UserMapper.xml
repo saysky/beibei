@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.User">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_display_name" jdbcType="VARCHAR" property="userDisplayName"/>
+        <result column="user_pass" jdbcType="VARCHAR" property="userPass"/>
+        <result column="user_email" jdbcType="VARCHAR" property="userEmail"/>
+        <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar"/>
+        <result column="user_desc" jdbcType="VARCHAR" property="userDesc"/>
+        <result column="user_site" jdbcType="VARCHAR" property="userSite"/>
+        <result column="login_enable" jdbcType="VARCHAR" property="loginEnable"/>
+        <result column="login_last" jdbcType="TIMESTAMP" property="loginLast"/>
+        <result column="login_error" jdbcType="INTEGER" property="loginError"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="plan_count" jdbcType="INTEGER" property="planCount"/>
+    </resultMap>
+
+    <sql id="all_columns">
+   user_id, user_name, user_display_name, user_pass, user_email,
+   user_avatar, user_desc, user_site, login_enable, login_last,
+   login_error, status, create_time,plan_count
+   </sql>
+
+    <sql id="normal">0</sql>
+    <sql id="ban">1</sql>
+    <sql id="deleted">2</sql>
+
+    <sql id="all_columns_with_table_name">
+    sens_user.user_id, sens_user.user_name, sens_user.user_display_name,
+    sens_user.user_pass, sens_user.user_email, sens_user.user_avatar,
+    sens_user.user_desc, sens_user.user_site,
+    sens_user.login_enable,sens_user.login_last, sens_user.login_error,
+    sens_user.status, sens_user.create_time,sens_user.plan_count
+  </sql>
+
+    <sql id="tb">`sens_user`</sql>
+
+    <sql id="all_values">
+        #{userId}, #{userName}, #{userDisplayName}, #{userEmail}, #{userPass},
+        #{userAvatar}, #{userDesc}, #{userSite}, #{loginEnable},
+        #{loginLast}, #{loginError}, #{status}, #{createTime},#{planCount}
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+    </select>
+
+    <select id="findByRoleId" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns_with_table_name"/>
+        FROM sens_rbac_user_role_ref,
+        sens_user WHERE sens_rbac_user_role_ref.role_id = #{roleId} AND
+        sens_rbac_user_role_ref.user_id = sens_user.user_id
+        ORDER BY user_id DESC
+    </select>
+
+    <select id="findByWithoutRole" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_id
+        NOT IN (SELECT user_id FROM sens_rbac_user_role_ref)
+    </select>
+
+
+    <select id="findByUserName" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_name = #{value} AND status !=
+        <include refid="deleted"/>
+        LIMIT 1
+    </select>
+
+    <select id="findByUserEmail" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_email = #{value} AND status !=
+        <include refid="deleted"/>
+        LIMIT 1
+    </select>
+
+
+    <select id="findByUserId" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_id = #{value}
+    </select>
+
+    <select id="findByUserNameAndUserPass" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_name = #{userName} AND user_pass = #{userPass} AND status !=
+        <include refid="deleted"/>
+        LIMIT 1
+    </select>
+
+    <select id="findByUserEmailAndUserPass" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_email = #{userEmail} AND user_pass = #{userPass} AND status !=
+        <include refid="deleted"/>
+        LIMIT 1
+    </select>
+
+
+    <select id="findByUserIdAndUserPass" resultType="com.liuyanzhao.sens.entity.User">
+        SELECT
+        <include refid="all_columns"/>
+        FROM
+        <include refid="tb"/>
+        WHERE user_id = #{userId} AND user_pass = #{userPass} AND status !=
+        <include refid="deleted"/>
+        LIMIT 1
+    </select>
+</mapper>

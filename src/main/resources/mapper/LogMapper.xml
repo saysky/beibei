@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.LogMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Log">
+    <id column="log_id" jdbcType="INTEGER" property="logId"/>
+    <result column="log_title" jdbcType="VARCHAR" property="logTitle"/>
+    <result column="log_content" jdbcType="VARCHAR" property="logContent"/>
+    <result column="log_ip" jdbcType="VARCHAR" property="logIp"/>
+    <result column="log_created" jdbcType="TIMESTAMP" property="logCreated"/>
+  </resultMap>
+
+  <sql id="all_columns">
+   log_id, log_title, log_content, log_ip, log_created
+    </sql>
+
+  <sql id="tb">`sens_log`</sql>
+
+  <sql id="all_values">
+        #{logId}, #{logTitle}, #{logContent}, #{logIp}, #{logCreated}
+    </sql>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+    ORDER BY log_id DESC
+  </select>
+
+
+  <select id="findTopFive" resultMap="BaseResultMap">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+    ORDER BY log_id DESC LIMIT 5
+  </select>
+
+  <delete id="deleteAll">
+    DELETE FROM
+    <include refid="tb"/>
+  </delete>
+
+
+</mapper>

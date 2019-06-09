@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.StrangeWordMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.StrangeWord">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="word_id" jdbcType="INTEGER" property="wordId"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+  </resultMap>
+
+  <select id="findAll" resultType="com.liuyanzhao.sens.entity.Word">
+   SELECT * FROM sens_word WHERE id IN
+   (SELECT word_id FROM sens_strange_word  where user_id = #{userId})
+  </select>
+
+
+</mapper>

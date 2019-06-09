@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.RolePermissionRefMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.RolePermissionRef">
+    <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+    <result column="permission_id" jdbcType="VARCHAR" property="permissionId"/>
+  </resultMap>
+
+  <sql id="all_columns">
+    role_id, permission_id
+  </sql>
+
+  <sql id="tb">`sens_rbac_role_permission_ref`</sql>
+
+  <sql id="all_values">
+        #{roleId}, #{permissionId}
+  </sql>
+
+  <delete id="deleteByRoleId">
+    DELETE FROM
+    <include refid="tb"/>
+    WHERE role_id = #{value}
+  </delete>
+
+  <insert id="batchInsert">
+    <foreach collection="list" item="item">
+      INSERT INTO
+      <include refid="tb"/>
+      (
+      <include refid="all_columns"/>
+      ) VALUES(
+        #{item.roleId}, #{item.permissionId}
+      );
+    </foreach>
+  </insert>
+
+</mapper>

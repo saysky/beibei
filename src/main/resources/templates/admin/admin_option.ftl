@@ -1,0 +1,649 @@
+<#include "module/_macro.ftl">
+<@head>${options.blog_title} | <@spring.message code='admin.setting.title' /></@head>
+<div class="wrapper">
+    <!-- 顶部栏模块 -->
+<#include "module/_header.ftl">
+    <!-- 菜单栏模块 -->
+<#include "module/_sidebar.ftl">
+    <div class="content-wrapper">
+        <style type="text/css" rel="stylesheet">
+            .form-horizontal .control-label {
+                text-align: left;
+            }
+
+            .nav-tabs-custom > .nav-tabs > li.active {
+                border-top-color: #d2d6de;
+            }
+
+            .control-radio {
+                padding-top: 7px;
+            }
+        </style>
+        <section class="content-header">
+            <h1>
+            <@spring.message code='admin.setting.title' />
+                <small></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    <a data-pjax="true" href="/admin">
+                        <i class="fa fa-dashboard"></i> <@spring.message code='admin.index.bread.index' /></a>
+                </li>
+                <li><a data-pjax="true" href="#"><@spring.message code='admin.setting.bread.setting' /></a></li>
+                <li class="active"><@spring.message code='admin.setting.title' /></li>
+            </ol>
+        </section>
+        <!-- tab选项卡 -->
+        <section class="content container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+<#--                            <li class="active">-->
+<#--                                <a href="#general"-->
+<#--                                   data-toggle="tab"><@spring.message code='admin.setting.tab.general' /></a>-->
+<#--                            </li>-->
+                            <li class="active">
+                                <a href="#attach"
+                                   data-toggle="tab"><@spring.message code='admin.setting.tab.attach' /></a>
+                            </li>
+                            <li>
+                                <a href="#admin"
+                                   data-toggle="tab"><@spring.message code='admin.setting.tab.admin' /></a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+                            <!-- 基础设置 -->
+<#--                            <div class="tab-pane active" id="general">-->
+<#--                                <form method="post" class="form-horizontal" id="commonOptions">-->
+<#--                                    <div class="box-body">-->
+<#--&lt;#&ndash;                                        <div class="form-group">&ndash;&gt;-->
+<#--&lt;#&ndash;                                            <label for="blogLocale"&ndash;&gt;-->
+<#--&lt;#&ndash;                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.blog-locale' /></label>&ndash;&gt;-->
+<#--&lt;#&ndash;                                            <div class="col-lg-4 col-sm-8">&ndash;&gt;-->
+<#--&lt;#&ndash;                                                <select class="form-control" id="blogLocale" name="blog_locale">&ndash;&gt;-->
+<#--&lt;#&ndash;                                                    <option value="zh_CN" ${((options.blog_locale?default('zh_CN'))=='zh_CN')?string('selected','')}>&ndash;&gt;-->
+<#--&lt;#&ndash;                                                        简体中文&ndash;&gt;-->
+<#--&lt;#&ndash;                                                    </option>&ndash;&gt;-->
+<#--&lt;#&ndash;                                                    <option value="en_US" ${((options.blog_locale?if_exists)=='en_US')?string('selected','')}>&ndash;&gt;-->
+<#--&lt;#&ndash;                                                        English&ndash;&gt;-->
+<#--&lt;#&ndash;                                                    </option>&ndash;&gt;-->
+<#--&lt;#&ndash;                                                </select>&ndash;&gt;-->
+<#--&lt;#&ndash;                                            </div>&ndash;&gt;-->
+<#--&lt;#&ndash;                                        </div>&ndash;&gt;-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogTitle"-->
+<#--                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.blog-title' /></label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <input type="text" class="form-control" id="blogTitle" name="blog_title"-->
+<#--                                                       value="${options.blog_title?if_exists}">-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogSubTitle"-->
+<#--                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.blog-sub-title' /></label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <input type="text" class="form-control" id="blogSubTitle"-->
+<#--                                                       name="blog_sub_title"-->
+<#--                                                       value="${options.blog_sub_title?if_exists}">-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogUrl"-->
+<#--                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.blog-url' /></label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <input type="url" class="form-control" id="blogUrl" name="blog_url"-->
+<#--                                                       value="${options.blog_url?default('http://localhost:8080')}">-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogStaticUrl"-->
+<#--                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.blog-static-url' /></label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <input type="url" class="form-control" id="blogStaticUrl"-->
+<#--                                                       name="blog_static_url"-->
+<#--                                                       value="${options.blog_static_url?if_exists}">-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogLogo" class="col-lg-2 col-sm-4 control-label">LOGO：</label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <div class="input-group">-->
+<#--                                                    <input type="text" class="form-control selectData" id="blogLogo"-->
+<#--                                                           name="blog_logo" value="${options.blog_logo?if_exists}">-->
+<#--                                                    <span class="input-group-btn">-->
+<#--                                                        <button class="btn btn-default " type="button"-->
+<#--                                                                onclick="openAttach('blogLogo')"><@spring.message code='common.btn.choose' /></button>-->
+<#--                                                    </span>-->
+<#--                                                </div>-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                        <div class="form-group">-->
+<#--                                            <label for="blogFavicon"-->
+<#--                                                   class="col-lg-2 col-sm-4 control-label">Favicon：</label>-->
+<#--                                            <div class="col-lg-4 col-sm-8">-->
+<#--                                                <div class="input-group">-->
+<#--                                                    <input type="text" class="form-control selectData" id="blogFavicon"-->
+<#--                                                           name="blog_favicon"-->
+<#--                                                           value="${options.blog_favicon?if_exists}">-->
+<#--                                                    <span class="input-group-btn">-->
+<#--                                                        <button class="btn btn-default " type="button"-->
+<#--                                                                onclick="openAttach('blogFavicon')"><@spring.message code='common.btn.choose' /></button>-->
+<#--                                                    </span>-->
+<#--                                                </div>-->
+<#--                                            </div>-->
+<#--                                        </div>-->
+<#--                                    </div>-->
+<#--                                    <div class="box-footer">-->
+<#--                                        <button type="button" class="btn btn-primary btn-sm "-->
+<#--                                                onclick="saveOptions('commonOptions')"><@spring.message code='common.btn.save' /></button>-->
+<#--                                    </div>-->
+<#--                                </form>-->
+<#--                            </div>-->
+
+                            <!-- 附件设置 -->
+                            <div class="tab-pane active" id="attach">
+                                <form method="post" class="form-horizontal" id="attachOptions">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.attach-choose' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="attach_loc" value="server" ${((options.attach_loc!'server')=='server')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.attach-loc-server' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="attach_loc"
+                                                           value="upyun" ${((options.attach_loc!)=='upyun')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.attach-loc-upyun' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="attach_loc"
+                                                           value="qiniu" ${((options.attach_loc!)=='qiniu')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.attach-loc-qiniu' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 又拍云选项 -->
+                                        <div class="upyun-options" style="display: none">
+                                            <div class="form-group">
+                                                <label for="upyunOssDomain"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-domain' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssDomain"
+                                                           name="upyun_oss_domain" value="${options.upyun_oss_domain!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upyunOssBucket"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-bucket' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssBucket"
+                                                           name="upyun_oss_bucket" value="${options.upyun_oss_bucket!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upyunOssOperator"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-operator' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssOperator"
+                                                           name="upyun_oss_operator"
+                                                           value="${options.upyun_oss_operator!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upyunOssPwd"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-pwd' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssPwd"
+                                                           name="upyun_oss_pwd" value="${options.upyun_oss_pwd!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upyunOssSrc"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-src' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssSrc"
+                                                           name="upyun_oss_src" value="${options.upyun_oss_src!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="upyunOssSmall"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.upyun-oss-small' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="upyunOssSmall"
+                                                           name="upyun_oss_small" value="${options.upyun_oss_small!}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 七牛云 -->
+                                        <div class="qiniu-options" style="display: none">
+                                            <div class="form-group">
+                                                <label for="qiniuDomain"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.qiniu-domain' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="qiniuDomain"
+                                                           name="qiniu_domain" value="${options.qiniu_domain!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="qiniuAccessKey" class="col-lg-2 col-sm-4 control-label">Access
+                                                    Key：</label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="qiniuAccessKey"
+                                                           name="qiniu_access_key" value="${options.qiniu_access_key!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="qiniuSecretKey" class="col-lg-2 col-sm-4 control-label">Secret
+                                                    Key：</label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="qiniuSecretKey"
+                                                           name="qiniu_secret_key" value="${options.qiniu_secret_key!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="qiniuBucket"
+                                                       class="col-lg-2 col-sm-4 control-label">Bucket：</label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="qiniuBucket"
+                                                           name="qiniu_bucket" value="${options.qiniu_bucket!}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="qiniuSmallUrl"
+                                                       class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.qiniu-small-url' /></label>
+                                                <div class="col-lg-4 col-sm-8">
+                                                    <input type="text" class="form-control" id="qiniuSamllUrl"
+                                                           name="qiniu_small_url" value="${options.qiniu_small_url!}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="button" class="btn btn-primary btn-sm "
+                                                onclick="saveOptions('attachOptions')"><@spring.message code='common.btn.save' /></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- 后台设置 -->
+                            <div class="tab-pane" id="admin">
+                                <form method="post" class="form-horizontal" id="adminOptions">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.admin-pjax' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_pjax"
+                                                           value="true" ${((options.admin_pjax?default('true'))=='true')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.enable' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_pjax"
+                                                           value="false" ${((options.admin_pjax?if_exists)=='false')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.disable' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.admin-loading' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_loading"
+                                                           value="true" ${((options.admin_loading?if_exists)=='true')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.enable' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_loading"
+                                                           value="false" ${((options.admin_loading?default('false'))=='false')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.disable' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.admin-layout' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_layout"
+                                                           value="" ${((options.admin_layout?default(''))=='')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.admin-layout-normal' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="admin_layout"
+                                                           value="layout-boxed" ${((options.admin_layout?default(''))=='layout-boxed')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.admin-layout-box' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="adminTheme"
+                                                   class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.admin-theme' /></label>
+                                            <div class="col-lg-4 col-sm-8">
+                                                <select class="form-control" id="adminTheme" name="admin_theme">
+                                                    <option value="skin-blue" ${((options.admin_theme?default('skin-blue'))=='skin-blue')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-blue' /></option>
+                                                    <option value="skin-blue-light" ${((options.admin_theme?if_exists)=='skin-blue-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-blue-light' /></option>
+                                                    <option value="skin-black" ${((options.admin_theme?if_exists)=='skin-black')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-black' /></option>
+                                                    <option value="skin-black-light" ${((options.admin_theme?if_exists)=='skin-black-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-black-light' /></option>
+                                                    <option value="skin-green" ${((options.admin_theme?if_exists)=='skin-green')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-green' /></option>
+                                                    <option value="skin-green-light" ${((options.admin_theme?if_exists)=='skin-green-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-green-light' /></option>
+                                                    <option value="skin-purple" ${((options.admin_theme?if_exists)=='skin-purple')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-purple' /></option>
+                                                    <option value="skin-purple-light" ${((options.admin_theme?if_exists)=='skin-purple-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-purple-light' /></option>
+                                                    <option value="skin-red" ${((options.admin_theme?if_exists)=='skin-red')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-red' /></option>
+                                                    <option value="skin-red-light" ${((options.admin_theme?if_exists)=='skin-red-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-red-light' /></option>
+                                                    <option value="skin-yellow" ${((options.admin_theme?if_exists)=='skin-yellow')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-yellow' /></option>
+                                                    <option value="skin-yellow-light" ${((options.admin_theme?if_exists)=='skin-yellow-light')?string('selected','')}><@spring.message code='admin.setting.form.admin-theme-skin-yellow-light' /></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.setting.form.sidebar-style' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="sidebar_style"
+                                                           value="" ${((options.sidebar_style?default(''))=='')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.sidebar-style-none' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="sidebar_style"
+                                                           value="sidebar-collapse" ${((options.sidebar_style?default(''))=='sidebar-collapse')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='admin.setting.form.sidebar-style-collapse' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 非管理员发布文章审核 -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.settings.form.open-post-check' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="open_post_check"
+                                                           value="true" ${((options.open_post_check?default('true'))=='true')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.enable' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="open_post_check"
+                                                           value="false" ${((options.open_post_check?if_exists)=='false')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.disable' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 是否开启注册 -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-sm-4 control-label"><@spring.message code='admin.settings.form.open-register' /></label>
+                                            <div class="col-lg-4 col-sm-8 control-radio">
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="open_register"
+                                                           value="true" ${((options.open_register?default('true'))=='true')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.enable' /></label>
+                                                    </div>
+                                                </div>
+                                                <div class="pretty p-default p-round">
+                                                    <input type="radio" name="open_register"
+                                                           value="false" ${((options.open_register?if_exists)=='false')?string('checked','')}>
+                                                    <div class="state p-primary">
+                                                        <label><@spring.message code='common.radio.disable' /></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="box-footer">
+                                        <button type="button" class="btn btn-primary btn-sm "
+                                                onclick="saveOptions('adminOptions')"><@spring.message code='common.btn.save' /></button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <@compress single_line=true>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                checkCommentOption();
+                checkAttachOption();
+                checkBindOption();
+            });
+
+            /**
+             * 打开附件
+             */
+            function openAttach(id) {
+                layer.open({
+                    type: 2,
+                    title: '<@spring.message code="common.js.all-attachment" />',
+                    shadeClose: true,
+                    shade: 0.5,
+                    maxmin: true,
+                    area: ['90%', '90%'],
+                    content: '/admin/attachment/select?id=' + id,
+                    scrollbar: false
+                });
+            }
+
+            /**
+             * 更新所有文章的摘要
+             */
+            function updateAllSummary() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/post/updateSummary',
+                    data: {
+                        postSummary: $('#postSummary').val()
+                    },
+                    success: function (data) {
+                        if (data.code == 1) {
+                            showMsg(data.msg, "success", 1000);
+                        } else {
+                            showMsg(data.msg, "success", 2000);
+                        }
+                    }
+                });
+            }
+
+            /**
+             * 主动提交文章到百度
+             */
+            function pushAllToBaidu() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/post/pushAllToBaidu',
+                    data: {
+                        baiduToken: $('#baiduToken').val()
+                    },
+                    success: function (data) {
+                        if (data.code == 1) {
+                            showMsg(data.msg, "success", 1000);
+                        } else {
+                            $.toast({
+                                text: data.msg,
+                                heading: '<@spring.message code="common.text.tips" />',
+                                icon: icon,
+                                showHideTransition: 'fade',
+                                allowToastClose: true,
+                                hideAfter: hideAfter,
+                                stack: 1,
+                                position: 'top-center',
+                                textAlign: 'left',
+                                loader: true,
+                                loaderBg: '#ffffff'
+                            });
+                        }
+                    }
+                });
+            }
+
+            /**
+             * 评论选项切换
+             */
+            function checkCommentOption() {
+                var native = $('input:radio[value=native]:checked').val();
+                var valine = $('input:radio[value=valine]:checked').val();
+                var disqus = $('input:radio[value=disqus]:checked').val();
+                var livere = $('input:radio[value=livere]:checked').val();
+                var changyan = $('input:radio[value=changyan]:checked').val();
+                if (native != null) {
+                    $('.native-options').show();
+                } else {
+                    $('.native-options').hide();
+                }
+                if (valine != null) {
+                    $('.valine-options').show();
+                } else {
+                    $('.valine-options').hide();
+                }
+                if (disqus != null) {
+                    $('.disqus-options').show();
+                } else {
+                    $('.disqus-options').hide();
+                }
+                if (livere != null) {
+                    $('.livere-options').show();
+                } else {
+                    $('.livere-options').hide();
+                }
+                if (changyan != null) {
+                    $('.changyan-options').show();
+                } else {
+                    $('.changyan-options').hide();
+                }
+            }
+
+            /**
+             * 附件选项切换
+             */
+            function checkAttachOption() {
+                var server = $('input:radio[value=server]:checked').val();
+                var upyun = $('input:radio[value=upyun]:checked').val();
+                var qiniu = $('input:radio[value=qiniu]:checked').val();
+                if (server != null) {
+                    $('.server-options').show();
+                } else {
+                    $('.server-options').hide();
+                }
+                if (upyun != null) {
+                    $('.upyun-options').show();
+                } else {
+                    $('.upyun-options').hide();
+                }
+                if (qiniu != null) {
+                    $('.qiniu-options').show();
+                } else {
+                    $('.qiniu-options').hide();
+                }
+            }
+
+            /**
+             * 附件选项切换
+             */
+            function checkBindOption() {
+                var qq = $('input:radio[value=bind-qq]:checked').val();
+                var github = $('input:radio[value=bind-github]:checked').val();
+                if (qq != null) {
+                    $('.bind-qq-options').show();
+                } else {
+                    $('.bind-qq-options').hide();
+                }
+                if (github != null) {
+                    $('.bind-github-options').show();
+                } else {
+                    $('.bind-github-options').hide();
+                }
+            }
+
+            /**
+             * 后台布局切换
+             */
+            function viewLayout() {
+                var layout = $('input:radio[value=layout-boxed]:checked').val();
+                if (layout != null) {
+                    $('body').addClass('layout-boxed');
+                } else {
+                    $('body').removeClass('layout-boxed');
+                }
+            }
+
+            /**
+             * 预览侧边栏
+             */
+            function viewSideBar() {
+                var layout = $('input:radio[value=sidebar-collapse]:checked').val();
+                if (layout != null) {
+                    $('body').addClass('sidebar-collapse');
+                } else {
+                    $('body').removeClass('sidebar-collapse');
+                }
+            }
+
+            $('input[name=comment_system]').click(function () {
+                checkCommentOption();
+            });
+            $('input[name=attach_loc]').click(function () {
+                checkAttachOption();
+            });
+            $('input[name=bind_type]').click(function () {
+                checkBindOption();
+            });
+            $('input[name=admin_layout]').click(function () {
+                viewLayout();
+            });
+            $('input[name=sidebar_style]').click(function () {
+                viewSideBar();
+            });
+
+            /**
+             * 预览后台样式切换
+             */
+            $(function () {
+                var beforeTheme;
+                $('#adminTheme').change(function () {
+                    if ($('body').hasClass("${options.admin_theme?default('skin-blue')}")) {
+                        $('body').removeClass("${options.admin_theme?default('skin-blue')}");
+                    }
+                    if (beforeTheme != null) {
+                        $('body').removeClass(beforeTheme);
+                    }
+                    $('body').addClass($(this).val());
+                    beforeTheme = $(this).val();
+                })
+            })
+        </script>
+    </@compress>
+    </div>
+<#include "module/_footer.ftl">
+</div>
+<@footer></@footer>

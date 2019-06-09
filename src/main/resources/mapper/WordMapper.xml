@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.WordMapper">
+    <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Word">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cn_name" jdbcType="VARCHAR" property="cnName"/>
+        <result column="en_name" jdbcType="VARCHAR" property="enName"/>
+        <result column="cn_sentence" jdbcType="VARCHAR" property="cnSentence"/>
+        <result column="en_sentence" jdbcType="VARCHAR" property="enSentence"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <select id="findAll" resultType="com.liuyanzhao.sens.entity.Word">
+        SELECT * FROM sens_word
+        <if test="keywords != null and keywords != ''">
+            WHERE cn_name LIKE CONCAT('%','${keywords}','%') OR en_name LIKE CONCAT('%','${keywords}','%')
+        </if>
+    </select>
+
+    <select id="getNotFinishWord" resultType="com.liuyanzhao.sens.entity.Word">
+        SELECT * FROM sens_word WHERE id NOT IN
+        (SELECT word_id FROM sens_record WHERE user_id =  #{value} AND status = 1)
+        ORDER BY id ASC LIMIT 1
+    </select>
+
+    <select id="getNotReadWord" resultType="com.liuyanzhao.sens.entity.Word">
+        SELECT * FROM sens_word WHERE id NOT IN
+        (SELECT word_id FROM sens_record WHERE user_id =  #{value})
+        ORDER BY id ASC LIMIT 1
+    </select>
+
+    <select id="getRandomWords" resultType="com.liuyanzhao.sens.entity.Word">
+        SELECT * FROM sens_word ORDER BY rand() LIMIT #{value}
+    </select>
+
+    <select id="getNextWord" resultType="com.liuyanzhao.sens.entity.Word">
+        SELECT * FROM sens_word WHERE id > #{value} LIMIT 1
+    </select>
+
+
+</mapper>

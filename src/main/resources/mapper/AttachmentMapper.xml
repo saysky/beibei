@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.AttachmentMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Attachment">
+    <id column="attach_id" jdbcType="INTEGER" property="attachId"/>
+    <result column="attach_name" jdbcType="VARCHAR" property="attachName"/>
+    <result column="attach_path" jdbcType="VARCHAR" property="attachPath"/>
+    <result column="attach_small_path" jdbcType="VARCHAR" property="attachSmallPath"/>
+    <result column="attach_type" jdbcType="VARCHAR" property="attachType"/>
+    <result column="attach_suffix" jdbcType="VARCHAR" property="attachSuffix"/>
+    <result column="attach_created" jdbcType="TIMESTAMP" property="attachCreated"/>
+    <result column="attach_size" jdbcType="VARCHAR" property="attachSize"/>
+    <result column="attach_wh" jdbcType="VARCHAR" property="attachWh"/>
+    <result column="attach_location" jdbcType="VARCHAR" property="attachLocation"/>
+    <result column="attach_origin" jdbcType="INTEGER" property="attachOrigin"/>
+  </resultMap>
+
+  <sql id="all_columns">
+   attach_id, attach_name, attach_path, attach_small_path, attach_type,
+   attach_suffix, attach_created, attach_size, attach_wh, attach_location, attach_origin
+    </sql>
+
+  <sql id="tb">`sens_attachment`</sql>
+
+  <sql id="all_values">
+        #{attachId}, #{attachName}, #{attachPath}, #{attachSmallPath}, #{attachType},
+        #{attachSuffix},#{attachCreated},#{attachSize},#{attachWh}, #{attachLocation}, #{attachOrigin}
+    </sql>
+
+  <select id="findAllByPage" resultMap="BaseResultMap">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+    <where>
+      <if test="keywords != null and keywords != ''">
+        attach_name LIKE CONCAT('%','${keywords}','%')
+      </if>
+    </where>
+    ORDER By attach_id DESC
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+    ORDER By attach_id DESC
+  </select>
+
+</mapper>

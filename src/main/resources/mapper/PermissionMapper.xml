@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuyanzhao.sens.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.liuyanzhao.sens.entity.Permission">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="en_name" jdbcType="VARCHAR" property="enName"/>
+    <result column="pid" jdbcType="INTEGER" property="pid"/>
+    <result column="permission" jdbcType="VARCHAR" property="permission"/>
+    <result column="resource_type" jdbcType="VARCHAR" property="resourceType"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="icon" jdbcType="VARCHAR" property="icon"/>
+  </resultMap>
+
+  <sql id="all_columns">
+    id, `name`, en_name, pid, permission, resource_type, url, icon
+  </sql>
+
+  <sql id="all_values_with_table_name">
+    sens_rbac_permission.id, sens_rbac_permission.`name`, sens_rbac_permission.en_name,sens_rbac_permission.pid,
+    sens_rbac_permission.permission, sens_rbac_permission.resource_type, sens_rbac_permission.url,  sens_rbac_permission.icon
+  </sql>
+
+  <sql id="tb">`sens_rbac_permission`</sql>
+
+  <sql id="all_values">
+        #{id}, #{name}, #{enName}, #{pid}, #{permission}, #{resourceType}, #{url}, #{icon}
+  </sql>
+
+  <select id="findByRoleId" resultType="com.liuyanzhao.sens.entity.Permission">
+    select
+    <include refid="all_values_with_table_name"/>
+    FROM<include refid="tb"/>, sens_rbac_role_permission_ref
+    where sens_rbac_role_permission_ref.role_id = #{value} AND
+    sens_rbac_permission.id = sens_rbac_role_permission_ref.permission_id
+  </select>
+
+
+  <select id="findAll" resultType="com.liuyanzhao.sens.entity.Permission">
+    SELECT
+    <include refid="all_columns"/>
+    FROM
+    <include refid="tb"/>
+  </select>
+
+  <select id="getMenuByRoleId" resultType="com.liuyanzhao.sens.entity.Permission">
+    SELECT
+    <include refid="all_values_with_table_name"/>
+    FROM sens_rbac_role_permission_ref, sens_rbac_permission
+    WHERE
+    sens_rbac_role_permission_ref.role_id = #{value}
+    AND sens_rbac_permission.id = sens_rbac_role_permission_ref.permission_id
+    AND sens_rbac_permission.resource_type = 'menu'
+  </select>
+</mapper>
